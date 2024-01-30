@@ -1,0 +1,49 @@
+{
+    "configurations": [
+        {
+            "name": "gcc-avr",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "C:/Program Files (x86)/Atmel/Studio/7.0/toolchain/avr8/avr8-gnu-toolchain/avr/include",
+                "C:/Program Files (x86)/Atmel/Studio/7.0/toolchain/avr8/avr8-gnu-toolchain/lib/gcc/avr/5.4.0/include",
+                "C:/Program Files (x86)/Atmel/Studio/7.0/toolchain/avr8/avr8-gnu-toolchain/lib/gcc/avr/5.4.0/include-fixed"
+            ],
+            "defines": [
+                "_DEBUG",
+                "UNICODE",
+                "_UNICODE"
+            ],
+            "windowsSdkVersion": "10.0.22000.0",
+            "compilerPath": "C:/WinAVR-20100110/bin/avr-gcc.exe",
+            "cStandard": "c17",
+            "cppStandard": "c++17",
+            "intelliSenseMode": "${default}",
+            "compilerArgs": [
+                "-x c",
+                "-funsigned-char",
+                "-funsigned-bitfields",
+                "-DDEBUG",
+                "-O2",
+                "-ffunction-sections",
+                "-fdata-sections",
+                "-fpack-struct",
+                "-fshort-enums",
+                "-g2",
+                "-Wall",
+                "-Wextra",
+                "-Wundef",
+                "-pedantic",
+                "-pedantic-errors",
+                "-mmcu=atmega169p",
+                "-B \"C:\\Program Files (x86)\\Atmel\\Studio\\7.0\\Packs\\atmel\\ATmega_DFP\\1.7.374\\gcc\\dev\\atmega169p\"",
+                "-c",
+                "-std=gnu99",
+                "-MD",
+                "-MP",
+                "-MF \"$(@:%.o=%.d)\" -MT\"$(@:%.o=%.d)\"",
+                "-MT\"$(@:%.o=%.o)\" "
+            ]
+        }
+    ],
+    "version": 4
+}
