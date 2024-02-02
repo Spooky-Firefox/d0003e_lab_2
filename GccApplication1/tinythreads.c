@@ -2,6 +2,7 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include "tinythreads.h"
+#include "joy_stick.h"
 
 #define NULL            0
 // Disable interrupts
@@ -56,9 +57,9 @@ static void initialize(void) {
 	// enable external interrupts on pins 15 to 8
 	EIMSK = EIMSK | (1<<PCIE1);
 	// enable interrupt for pin 15, joystick down
-	PCMSK1 = PCMSK1 | (1<< PCINT15);
-	// enable pull upp resistor
-	PORTB = PORTB | (1<<7);
+	PCMSK1 = PCMSK1 | (1<< PCINT12);
+	// enable pull upp resistor and other
+	setupJOYSTICK();
 
 
 	initialized = 1;
@@ -189,5 +190,7 @@ void unlock(mutex *m) {
 
 
 ISR(PCINT1_vect){
-    yield();
+	if (is_joistick_down()){
+		yield();
+	}
 }
