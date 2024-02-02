@@ -145,11 +145,10 @@ void spawn(void (* function)(int), int arg) {
 		// thread is done
 		DISABLE();
 		// add current thread to queue of free thread_blocks
+		// will remove the current thread from ready queue
 		enqueue(current, &freeQ);
 		// run next thread in the queue
 		dispatch(dequeue(&readyQ));
-		//TODO remove current from readyQ
-		// currently it still exist and when its turn it just calls the next thread
 	}
 
 	// give up, get some help, its jover
@@ -161,8 +160,13 @@ void spawn(void (* function)(int), int arg) {
 	ENABLE();
 }
 
-void yield(void) {
 
+// swith context to next thread
+void yield(void) {
+	// add curent thread to queue
+	enqueue(current, &readyQ);
+	// run the next thread
+	dispatch(dequeue(&readyQ));
 }
 
 void lock(mutex *m) {
