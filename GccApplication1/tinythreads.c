@@ -51,6 +51,16 @@ static void initialize(void) {
 	// make last thread point to NULL (int* 0)
 	threads[NTHREADS-1].next = NULL;
 	// set initalized to true
+
+	// enable joystick interrupt
+	// enable external interrupts on pins 15 to 8
+	EIMSK = EIMSK | (1<<PCIE1);
+	// enable interrupt for pin 15, joystick down
+	PCMSK1 = PCMSK1 | (1<< PCINT15);
+	// enable pull upp resistor
+	PORTB = PORTB | (1<<7);
+
+
 	initialized = 1;
 }
 
@@ -175,4 +185,9 @@ void lock(mutex *m) {
 
 void unlock(mutex *m) {
 
+}
+
+
+ISR(PCINT1_vect){
+    yield();
 }

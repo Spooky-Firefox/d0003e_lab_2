@@ -8,6 +8,7 @@
 #include <avr/io.h>
 #include "lcd.h"
 #include "primes.h"
+// #include "switch_thread_interupt.c" //TODO add header file
 
 void printAt(long num, int pos) {
 	int pp = pos;
@@ -22,7 +23,7 @@ void computePrimes(int pos) {
 	for(n = 1; ; n++) {
 		if (is_prime(n)) {
 			printAt(n, pos);
-			yield();
+			// yield();
 		}
 	}
 }
