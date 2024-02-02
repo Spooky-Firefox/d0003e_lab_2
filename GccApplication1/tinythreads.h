@@ -3,11 +3,13 @@
  * tinythreads.h
  *
  */
+#pragma once
 
 #ifndef _TINYTHREADS_H
 #define _TINYTHREADS_H
 
 struct thread_block;
+//# THIS IS ACTUALLY thread_block*
 typedef struct thread_block *thread;
 void spawn(void (*code)(int), int arg);
 void yield(void);

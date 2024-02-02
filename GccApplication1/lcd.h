@@ -1,4 +1,5 @@
 #pragma once
+#include <stdint.h>
 
 // Enables the lcd and sets up its parameters
 void setupLCD();
