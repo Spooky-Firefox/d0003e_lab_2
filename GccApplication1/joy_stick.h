@@ -1,5 +1,5 @@
 #pragma once
-#import <stdint.h>
+#include <stdint.h>
 
 void setupJOYSTICK();
 
