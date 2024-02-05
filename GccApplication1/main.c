@@ -10,8 +10,9 @@
 #include "primes.h"
 // #include "switch_thread_interupt.c" //TODO add header file
 
+int pp;
 void printAt(long num, int pos) {
-	int pp = pos;
+	pp = pos;
 	writeChar( (num % 100) / 10 + '0', pp);
 	pp++;
 	writeChar( num % 10 + '0', pp);
