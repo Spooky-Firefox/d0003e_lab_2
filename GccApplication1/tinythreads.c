@@ -44,6 +44,8 @@ thread current = &initp;
 int initialized = 0;
 
 static void initialize(void) {
+	//disable interrupt
+	DISABLE();
 	int i;
 	// make the EMPTY threads point toward the next thread
 	for (i=0; i<NTHREADS-1; i++){
@@ -61,8 +63,36 @@ static void initialize(void) {
 	// enable pull upp resistor and other
 	setupJOYSTICK();
 
+	// enable timer 1 interrupt
+	// use the 8 MHz system clock
+	// prescaler 1024
+	// clkio/256 = 0b101 = 0x5
+	TCCR1B = 0x5 << CS10;
+	// set compare on match
+	// clear on timer match
+	// set OCA1 to high on match
+	// 0b11 = 0x3
+	TCCR1A = 0x3 << COM1A0;
+	// enable the interrupt of compare unit A
+	// OCIE1A = Output Compare Interrupt Enable (Timer) 1 (Unit) A
+	TIMSK1 = TIMSK1 | 1 << OCIE1A;
+
+	// 8 MHz 
+	// 8_000_000 / 1024 = 7812,5 clk/sec = 7,8125 clk/ms
+	// 50 * 7,8125 = 390,625 clk / 50ms
+	// 391 = 0x0187
+	// writing to tmp higher byte off ouput compare register timer 1 module a
+	OCR1AH = 0x01;
+	// writing to lower byte, causing tmp to be written to higher
+	OCR1AL = 0x87;
+
+	TCNT1H = 0x00; // write to tmp
+	TCNT1L = 0x00; // write to lower causing temp to write to higher
+	
 
 	initialized = 1;
+	// enable interrupt
+	ENABLE();
 }
 
 // ## Add thread to last position in queue, fifo
@@ -193,4 +223,11 @@ ISR(PCINT1_vect){
 	if (is_joistick_down()){
 		yield();
 	}
+}
+
+ISR(TIMER1_COMPA_vect){
+	// when interrupt executes bit is cleared
+	TCNT1H = 0x00; // write to tmp
+	TCNT1L = 0x00; // write to lower causing temp to write to higher
+	yield();
 }
