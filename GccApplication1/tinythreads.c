@@ -211,16 +211,37 @@ void yield(void) {
 }
 
 void lock(mutex *m) {
-
+	DISABLE();
+	if (m->locked){
+		ENABLE();
+		enqueue(current,&m->waitQ);
+		dispatch(dequeue(&readyQ));
+	} else {
+		m->locked = 1;
+		ENABLE();
+	}
 }
 
+// a locks
+// b tries to lock, gets put in m:s waitQ
+// a unlocks, puts itself in readyQ, b takes over
 void unlock(mutex *m) {
-
+	DISABLE();
+	if (m->waitQ){
+		enqueue(current,&readyQ);
+		ENABLE();
+		dispatch(dequeue(&m->waitQ));// when yield is called on thread, thread is added to readyQ
+	}
+	else{
+		m->locked = 0;
+		ENABLE();
+	}
 }
 
 
 ISR(PCINT1_vect){
 	if (is_joistick_down()){
+		while(1){};
 		yield();
 	}
 }
