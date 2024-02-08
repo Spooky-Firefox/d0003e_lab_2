@@ -196,17 +196,17 @@ void spawn(void (* function)(int), int arg) {
 	SETSTACK(&newp->context, &newp->stack);
 
 	enqueue(newp, &readyQ);
-
 	// enable interupt
 	ENABLE();
 }
 
-
 // swith context to next thread
 void yield(void) {
+	DISABLE();
 	// add curent thread to queue
 	enqueue(current, &readyQ);
 	// run the next thread
+	ENABLE();
 	dispatch(dequeue(&readyQ));
 }
 
